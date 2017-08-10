@@ -110,7 +110,7 @@ class BlxSenseHat(object):
         scroll_pixels.extend(string_padding)
 
         for s in text_string:
-            scroll_pixels.extend(get_char_pixels(s))
+            scroll_pixels.extend(self._get_char_pixels(s))
         scroll_pixels.extend(string_padding)
 
         # Shift right by 8 pixels per frame to scroll
