@@ -12,7 +12,7 @@ setup(
     author_email="brig@golamoreaux.com",
     description="Python module to calibrate the Raspberry Pi Sense HAT used in the Astro Pi mission",
     long_description=read('README.rst'),
-    license="BSD",
+    license="MIT",
     keywords=[
         "sense hat",
         "raspberrypi",
@@ -37,6 +37,6 @@ setup(
         "Topic :: Education",
         "Intended Audience :: Education",
         "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: BSD License",
+        "License :: OSI Approved :: MIT License",
     ],
 )
