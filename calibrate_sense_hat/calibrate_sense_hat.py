@@ -99,7 +99,7 @@ class BlxSenseHat(object):
     #         for pixel in display_pixels
     #     ]
 
-    def show_message(text_string,scroll_speed=.1, text_colour=[255, 255, 255], back_colour=[0, 0, 0]):    
+    def show_message(self, text_string,scroll_speed=.1, text_colour=[255, 255, 255], back_colour=[0, 0, 0]):    
         """
         Scrolls a string of text across the LED matrix using the specified
         speed and colours
