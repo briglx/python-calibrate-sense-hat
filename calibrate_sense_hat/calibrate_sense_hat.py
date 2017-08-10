@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 from PIL import Image  # pillow
-import SenseHat
+from sense_hat import SenseHat
 
 class BlxSenseHat(object):
 
