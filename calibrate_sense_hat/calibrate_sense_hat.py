@@ -146,3 +146,13 @@ class BlxSenseHat(object):
     #             # Two bytes per pixel in fb memory, 16 bit RGB565
     #             f.seek(map[index // 8][index % 8] * 2)  # row, column
     #             f.write(self._pack_bin(pix))
+
+    def calibrate(self):
+
+        self.show_message("Starting calibration...")
+
+        for t in range(5):
+            self._sense_hat.show_letter(5-t)
+            time.sleep(1)
+
+        self.show_message("Done")
