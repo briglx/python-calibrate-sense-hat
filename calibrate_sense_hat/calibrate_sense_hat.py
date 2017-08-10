@@ -152,7 +152,7 @@ class BlxSenseHat(object):
         self.show_message("Starting calibration...")
 
         for t in range(5):
-            self._sense_hat.show_letter(5-t)
+            self._sense_hat.show_letter(str(5-t))
             time.sleep(1)
 
         self.show_message("Done")
