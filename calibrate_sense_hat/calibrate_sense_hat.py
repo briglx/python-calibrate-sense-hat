@@ -1,8 +1,9 @@
 #!/usr/bin/python
 import os
 from PIL import Image  # pillow
+import SenseHat
 
-class SenseHat(object):
+class BlxSenseHat(object):
 
 
     def __init__(
@@ -17,6 +18,8 @@ class SenseHat(object):
             os.path.join(dir_path, '%s.png' % text_assets),
             os.path.join(dir_path, '%s.txt' % text_assets)
         )
+
+        self._sense_hat = SenseHat()
 
     ####
     # Text assets
@@ -72,51 +75,73 @@ class SenseHat(object):
         else:
             return list(self._text_dict['?'])
 
-    def display_message( self,
-            text_string,
-            x_pos=0,
-            y_pos=0,
-            text_colour=[255, 255, 255],
-            back_colour=[0, 0, 0]
-        ):
+    # def display_message( self,
+    #         text_string,
+    #         x_pos=0,
+    #         y_pos=0,
+    #         text_colour=[255, 255, 255],
+    #         back_colour=[0, 0, 0]
+    #     ):
 
+    #     """
+    #     Sets a string of text on the LED matrix at the specified 
+    #     location and colours
+    #     """
+
+    #     display_pixels = []
+
+    #     for s in text_string:
+    #         display_pixels.extend(self._get_char_pixels(s))
+    
+    #     # Recolour pixels as necessary
+    #     coloured_pixels = [
+    #         text_colour if pixel == [255, 255, 255] else back_colour
+    #         for pixel in display_pixels
+    #     ]
+
+    def show_message(text_string,scroll_speed=.1, text_colour=[255, 255, 255], back_colour=[0, 0, 0]):    
         """
-        Sets a string of text on the LED matrix at the specified 
-        location and colours
+        Scrolls a string of text across the LED matrix using the specified
+        speed and colours
         """
 
-        display_pixels = []
+        scroll_pixels = []
+        string_padding = [[0, 0, 0]] * 64
+        scroll_pixels.extend(string_padding)
 
         for s in text_string:
-            display_pixels.extend(self._get_char_pixels(s))
-    
-        # Recolour pixels as necessary
-        coloured_pixels = [
-            text_colour if pixel == [255, 255, 255] else back_colour
-            for pixel in display_pixels
-        ]
+            scroll_pixels.extend(get_char_pixels(s))
+        scroll_pixels.extend(string_padding)
 
-    def set_pixels(self, pixel_list):
-        """
-        Accepts a list containing 64 smaller lists of [R,G,B] pixels and
-        updates the LED matrix. R,G,B elements must intergers between 0
-        and 255
-        """
+        # Shift right by 8 pixels per frame to scroll
+        scroll_length = len(scroll_pixels) // 8
+        for i in range(scroll_length - 8):
+                start = i * 8
+                end = start + 64
+                self._sense_hat.set_pixels(scroll_pixels[start:end])
+                time.sleep(scroll_speed)
 
-        if len(pixel_list) != 64:
-            raise ValueError('Pixel lists must have 64 elements')
+    # def set_pixels(self, pixel_list):
+    #     """
+    #     Accepts a list containing 64 smaller lists of [R,G,B] pixels and
+    #     updates the LED matrix. R,G,B elements must intergers between 0
+    #     and 255
+    #     """
 
-        for index, pix in enumerate(pixel_list):
-            if len(pix) != 3:
-                raise ValueError('Pixel at index %d is invalid. Pixels must contain 3 elements: Red, Green and Blue' % index)
+    #     if len(pixel_list) != 64:
+    #         raise ValueError('Pixel lists must have 64 elements')
 
-            for element in pix:
-                if element > 255 or element < 0:
-                    raise ValueError('Pixel at index %d is invalid. Pixel elements must be between 0 and 255' % index)
+    #     for index, pix in enumerate(pixel_list):
+    #         if len(pix) != 3:
+    #             raise ValueError('Pixel at index %d is invalid. Pixels must contain 3 elements: Red, Green and Blue' % index)
 
-        with open(self._fb_device, 'wb') as f:
-            map = self._pix_map[self._rotation]
-            for index, pix in enumerate(pixel_list):
-                # Two bytes per pixel in fb memory, 16 bit RGB565
-                f.seek(map[index // 8][index % 8] * 2)  # row, column
-                f.write(self._pack_bin(pix))
+    #         for element in pix:
+    #             if element > 255 or element < 0:
+    #                 raise ValueError('Pixel at index %d is invalid. Pixel elements must be between 0 and 255' % index)
+
+    #     with open(self._fb_device, 'wb') as f:
+    #         map = self._pix_map[self._rotation]
+    #         for index, pix in enumerate(pixel_list):
+    #             # Two bytes per pixel in fb memory, 16 bit RGB565
+    #             f.seek(map[index // 8][index % 8] * 2)  # row, column
+    #             f.write(self._pack_bin(pix))
