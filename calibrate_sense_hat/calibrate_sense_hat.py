@@ -2,6 +2,7 @@
 import os
 from PIL import Image  # pillow
 from sense_hat import SenseHat
+import time
 
 class BlxSenseHat(object):
 
