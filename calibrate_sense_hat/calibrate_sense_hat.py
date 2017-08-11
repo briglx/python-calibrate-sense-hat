@@ -107,7 +107,7 @@ class BlxSenseHat(object):
         speed and colours
         """
         previous_rotation = self._sense_hat.rotation
-        self._sense_hat.rotation(self._sense_hat.rotation - 90)
+        self._sense_hat.rotation = self._sense_hat.rotation - 90
         if self._sense_hat.rotation < 0:
             self._sense_hat.rotation(270)
 
@@ -127,7 +127,7 @@ class BlxSenseHat(object):
             self._sense_hat.set_pixels(scroll_pixels[start:end])
             time.sleep(scroll_speed)
 
-        self._sense_hat.rotation(previous_rotation)
+        self._sense_hat.rotation = previous_rotation
 
     
     def calibrate(self):
