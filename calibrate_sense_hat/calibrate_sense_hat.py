@@ -161,17 +161,17 @@ class BlxSenseHat(object):
         print(0)
         time.sleep(3)
 
-        self._sense_hat.set_rotation(90, true)
+        self._sense_hat.set_rotation(90, True)
         self._sense_hat.set_pixels(arrow)
         print(90)
         time.sleep(3)
 
-        self._sense_hat.set_rotation(180, true)
+        self._sense_hat.set_rotation(180, True)
         self._sense_hat.set_pixels(arrow)
         print(180)
         time.sleep(3)
 
-        self._sense_hat.set_rotation(270, true)
+        self._sense_hat.set_rotation(270, True)
         self._sense_hat.set_pixels(arrow)
         print(270)
         time.sleep(3)
