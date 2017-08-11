@@ -134,10 +134,26 @@ class BlxSenseHat(object):
     
     def calibrate(self):
 
+        X = (255, 0, 0)
+        O = (255, 255, 255)
+
+        arrow = [
+            O, O, O, X, X, O, O, O,
+            O, O, X, X, X, X, O, O,
+            O, X, X, O, O, X, X, O,
+            X, X, O, O, O, O, X, X,
+            X, O, O, O, O, O, O, X,
+            O, O, O, O, O, O, O, O,
+            O, O, O, O, O, O, O, O,
+            O, O, O, O, O, O, O, O
+        ]
+
         self.show_message("Starting calibration...")
 
         for t in range(5):
             self._sense_hat.show_letter(str(5-t))
             time.sleep(1)
+
+        self._sense_hat.set_pixels(arrow)
 
         self.show_message("Done")
