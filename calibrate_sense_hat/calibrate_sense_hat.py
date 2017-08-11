@@ -22,6 +22,30 @@ class BlxSenseHat(object):
 
         self._sense_hat = SenseHat()
 
+        pix_map0 = np.array([
+             [0,  1,  2,  3,  4,  5,  6,  7],
+             [8,  9, 10, 11, 12, 13, 14, 15],
+            [16, 17, 18, 19, 20, 21, 22, 23],
+            [24, 25, 26, 27, 28, 29, 30, 31],
+            [32, 33, 34, 35, 36, 37, 38, 39],
+            [40, 41, 42, 43, 44, 45, 46, 47],
+            [48, 49, 50, 51, 52, 53, 54, 55],
+            [56, 57, 58, 59, 60, 61, 62, 63]
+        ], int)
+
+        pix_map90 = np.rot90(pix_map0)
+        pix_map180 = np.rot90(pix_map90)
+        pix_map270 = np.rot90(pix_map180)
+
+        self._pix_map = {
+            0: pix_map0,
+            90: pix_map90,
+            180: pix_map180,
+            270: pix_map270
+        }
+
+        self._rotation = 0
+
     ####
     # Text assets
     ####
@@ -76,35 +100,18 @@ class BlxSenseHat(object):
         else:
             return list(self._text_dict['?'])
 
-    # def display_message( self,
-    #         text_string,
-    #         x_pos=0,
-    #         y_pos=0,
-    #         text_colour=[255, 255, 255],
-    #         back_colour=[0, 0, 0]
-    #     ):
-
-    #     """
-    #     Sets a string of text on the LED matrix at the specified 
-    #     location and colours
-    #     """
-
-    #     display_pixels = []
-
-    #     for s in text_string:
-    #         display_pixels.extend(self._get_char_pixels(s))
-    
-    #     # Recolour pixels as necessary
-    #     coloured_pixels = [
-    #         text_colour if pixel == [255, 255, 255] else back_colour
-    #         for pixel in display_pixels
-    #     ]
-
     def show_message(self, text_string,scroll_speed=.1, text_colour=[255, 255, 255], back_colour=[0, 0, 0]):    
         """
         Scrolls a string of text across the LED matrix using the specified
         speed and colours
         """
+
+
+        set_rotation
+        previous_rotation = self._sense.rotation
+        self._sense.rotation(self._sense.rotation - 90)
+        if self._sense.rotation < 0:
+            self._sense.rotation(270)
 
         scroll_pixels = []
         string_padding = [[0, 0, 0]] * 64
@@ -117,36 +124,14 @@ class BlxSenseHat(object):
         # Shift right by 8 pixels per frame to scroll
         scroll_length = len(scroll_pixels) // 8
         for i in range(scroll_length - 8):
-                start = i * 8
-                end = start + 64
-                self._sense_hat.set_pixels(scroll_pixels[start:end])
-                time.sleep(scroll_speed)
+            start = i * 8
+            end = start + 64
+            self._sense_hat.set_pixels(scroll_pixels[start:end])
+            time.sleep(scroll_speed)
 
-    # def set_pixels(self, pixel_list):
-    #     """
-    #     Accepts a list containing 64 smaller lists of [R,G,B] pixels and
-    #     updates the LED matrix. R,G,B elements must intergers between 0
-    #     and 255
-    #     """
+        self._sense.rotation(previous_rotation)
 
-    #     if len(pixel_list) != 64:
-    #         raise ValueError('Pixel lists must have 64 elements')
-
-    #     for index, pix in enumerate(pixel_list):
-    #         if len(pix) != 3:
-    #             raise ValueError('Pixel at index %d is invalid. Pixels must contain 3 elements: Red, Green and Blue' % index)
-
-    #         for element in pix:
-    #             if element > 255 or element < 0:
-    #                 raise ValueError('Pixel at index %d is invalid. Pixel elements must be between 0 and 255' % index)
-
-    #     with open(self._fb_device, 'wb') as f:
-    #         map = self._pix_map[self._rotation]
-    #         for index, pix in enumerate(pixel_list):
-    #             # Two bytes per pixel in fb memory, 16 bit RGB565
-    #             f.seek(map[index // 8][index % 8] * 2)  # row, column
-    #             f.write(self._pack_bin(pix))
-
+    
     def calibrate(self):
 
         self.show_message("Starting calibration...")
