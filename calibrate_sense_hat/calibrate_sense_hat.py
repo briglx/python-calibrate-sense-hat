@@ -107,9 +107,11 @@ class BlxSenseHat(object):
         speed and colours
         """
         previous_rotation = self._sense_hat.rotation
-        self._sense_hat.rotation = self._sense_hat.rotation - 90
-        if self._sense_hat.rotation < 0:
-            self._sense_hat.rotation(270)
+        
+        if self._sense_hat.rotation - 90 < 0:
+            self._sense_hat.rotation = 270
+        else:
+            self._sense_hat.rotation = self._sense_hat.rotation - 90
 
         scroll_pixels = []
         string_padding = [[0, 0, 0]] * 64
