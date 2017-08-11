@@ -152,9 +152,29 @@ class BlxSenseHat(object):
 
         for t in range(5):
             self._sense_hat.show_letter(str(5-t))
+            print(str(5-t))
             time.sleep(1)
 
+
+        self._sense_hat.set_rotation(0)
         self._sense_hat.set_pixels(arrow)
+        print(0)
         time.sleep(3)
+
+        self._sense_hat.set_rotation(90, true)
+        self._sense_hat.set_pixels(arrow)
+        print(90)
+        time.sleep(3)
+
+        self._sense_hat.set_rotation(180, true)
+        self._sense_hat.set_pixels(arrow)
+        print(180)
+        time.sleep(3)
+
+        self._sense_hat.set_rotation(270, true)
+        self._sense_hat.set_pixels(arrow)
+        print(270)
+        time.sleep(3)
+
 
         self.show_message("Done")
