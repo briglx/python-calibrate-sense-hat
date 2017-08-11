@@ -106,9 +106,6 @@ class BlxSenseHat(object):
         Scrolls a string of text across the LED matrix using the specified
         speed and colours
         """
-
-
-        set_rotation
         previous_rotation = self._sense.rotation
         self._sense.rotation(self._sense.rotation - 90)
         if self._sense.rotation < 0:
