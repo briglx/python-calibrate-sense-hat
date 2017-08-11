@@ -158,23 +158,30 @@ class BlxSenseHat(object):
 
         self._sense_hat.set_rotation(0)
         self._sense_hat.set_pixels(arrow)
-        print(0)
-        time.sleep(3)
-
+        log_sensors(0, 3)
+       
         self._sense_hat.set_rotation(90, True)
         self._sense_hat.set_pixels(arrow)
-        print(90)
-        time.sleep(3)
+        log_sensors(90, 3)
 
         self._sense_hat.set_rotation(180, True)
         self._sense_hat.set_pixels(arrow)
-        print(180)
-        time.sleep(3)
+        log_sensors(180, 3)
+       
 
         self._sense_hat.set_rotation(270, True)
         self._sense_hat.set_pixels(arrow)
-        print(270)
-        time.sleep(3)
+        log_sensors(270, 3)
 
-
+        self._sense_hat.set_rotation(0)
         self.show_message("Done")
+
+    def log_sensors(self, direction, duration):
+
+        for i in range(duration * 10):
+
+            orientation = self._sense.get_orientation()
+            print(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"]))
+            time.sleep(.1)
+
+
