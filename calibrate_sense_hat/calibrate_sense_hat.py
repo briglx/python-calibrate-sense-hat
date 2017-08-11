@@ -106,10 +106,10 @@ class BlxSenseHat(object):
         Scrolls a string of text across the LED matrix using the specified
         speed and colours
         """
-        previous_rotation = self._sense.rotation
-        self._sense.rotation(self._sense.rotation - 90)
-        if self._sense.rotation < 0:
-            self._sense.rotation(270)
+        previous_rotation = self._sense_hat.rotation
+        self._sense_hat.rotation(self._sense_hat.rotation - 90)
+        if self._sense_hat.rotation < 0:
+            self._sense_hat.rotation(270)
 
         scroll_pixels = []
         string_padding = [[0, 0, 0]] * 64
@@ -127,7 +127,7 @@ class BlxSenseHat(object):
             self._sense_hat.set_pixels(scroll_pixels[start:end])
             time.sleep(scroll_speed)
 
-        self._sense.rotation(previous_rotation)
+        self._sense_hat.rotation(previous_rotation)
 
     
     def calibrate(self):
