@@ -132,7 +132,7 @@ class BlxSenseHat(object):
         self._sense_hat.rotation = previous_rotation
 
     
-    def calibrate(self):
+    def calibrate(self, duration):
 
         X = (128, 0, 0)
         O = (0, 0, 0)
@@ -158,20 +158,20 @@ class BlxSenseHat(object):
 
         self._sense_hat.set_rotation(0)
         self._sense_hat.set_pixels(arrow)
-        self._log_sensors(0, 3)
+        self._log_sensors(0, duration)
        
         self._sense_hat.set_rotation(90, True)
         self._sense_hat.set_pixels(arrow)
-        self._log_sensors(90, 3)
+        self._log_sensors(90, duration)
 
         self._sense_hat.set_rotation(180, True)
         self._sense_hat.set_pixels(arrow)
-        self._log_sensors(180, 3)
+        self._log_sensors(180, duration)
        
 
         self._sense_hat.set_rotation(270, True)
         self._sense_hat.set_pixels(arrow)
-        self._log_sensors(270, 3)
+        self._log_sensors(270, duration)
 
         self._sense_hat.set_rotation(0)
         self.show_message("Done")
