@@ -4,6 +4,7 @@ from PIL import Image  # pillow
 from sense_hat import SenseHat
 import numpy as np
 import time
+import sys, errno
 
 class BlxSenseHat(object):
 
@@ -178,10 +179,15 @@ class BlxSenseHat(object):
 
     def _log_sensors(self, direction, duration):
 
-        for i in range(duration * 10):
+        try:
 
-            orientation = self._sense_hat.get_orientation()
-            print(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"]))
-            time.sleep(.1)
+            for i in range(duration * 10):
 
+                orientation = self._sense_hat.get_orientation()
+                sys.stdout.write(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"]))
+                time.sleep(.1)
+
+        except IOError as e:
+            if e.errno == errno.EPIPE:
+               
 
