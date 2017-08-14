@@ -180,6 +180,6 @@ class BlxSenseHat(object):
         for i in range(duration * 10):
 
             orientation = self._sense_hat.get_orientation()
-            sys.stdout.write(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"] + '\n'))
+            sys.stdout.write(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"]) + '\n')
             time.sleep(.1)
 
