@@ -149,13 +149,12 @@ class BlxSenseHat(object):
             O, O, O, O, O, O, O, O
         ]
 
-        self.show_message("Starting calibration...")
+        self.show_message("Calibrating")
 
         for t in range(5):
             self._sense_hat.show_letter(str(5-t))
             print(str(5-t))
-            time.sleep(1)
-
+            time.sleep(.33)
 
         self._sense_hat.set_rotation(0)
         self._sense_hat.set_pixels(arrow)
@@ -168,7 +167,6 @@ class BlxSenseHat(object):
         self._sense_hat.set_rotation(180, True)
         self._sense_hat.set_pixels(arrow)
         self._log_sensors(180, duration)
-       
 
         self._sense_hat.set_rotation(270, True)
         self._sense_hat.set_pixels(arrow)
@@ -179,11 +177,9 @@ class BlxSenseHat(object):
 
     def _log_sensors(self, direction, duration):
 
-       
-
         for i in range(duration * 10):
 
             orientation = self._sense_hat.get_orientation()
-            sys.stdout.write(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"]))
+            sys.stdout.write(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"] + '\n'))
             time.sleep(.1)
 
