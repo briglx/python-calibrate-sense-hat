@@ -5,7 +5,10 @@ from sense_hat import SenseHat
 import numpy as np
 import time
 import sys, errno
+
 # from sklearn.externals import joblib
+
+
 
 
 class BlxSenseHat(object):
@@ -244,7 +247,7 @@ class BlxSenseHat(object):
 
     def convert_orientation(self, orientation, shift=0):
     
-        orientation = np.array([raw_orientation['pitch'], raw_orientation['roll'], raw_orientation['yaw'],  ])
+        orientation = np.array([orientation['pitch'], orientation['roll'], orientation['yaw'],  ])
            
         orientation = np.round(orientation).astype(int)
         idx = np.where(orientation >180)
