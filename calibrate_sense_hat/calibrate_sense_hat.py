@@ -5,7 +5,7 @@ from sense_hat import SenseHat
 import numpy as np
 import time
 import sys, errno
-# from sklearn.externals import joblib
+from sklearn.externals import joblib
 import pickle
 
 class BlxSenseHat(object):
