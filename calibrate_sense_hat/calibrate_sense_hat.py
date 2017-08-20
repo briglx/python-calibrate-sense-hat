@@ -5,7 +5,7 @@ from sense_hat import SenseHat
 import numpy as np
 import time
 import sys, errno
-from sklearn.externals import joblib
+# from sklearn.externals import joblib
 
 
 class BlxSenseHat(object):
@@ -63,7 +63,7 @@ class BlxSenseHat(object):
         based on the orientation readings.
         """
 
-        self._clf = joblib.load(model_file)
+        # self._clf = joblib.load(model_file)
 
 
 
