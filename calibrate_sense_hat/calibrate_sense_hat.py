@@ -218,7 +218,7 @@ class BlxSenseHat(object):
         pixels = self._getPixelsValue(prob)
 
         for i in range(3):
-            self._sense_hat.set_pixels(x, y-i, pixels[i])
+            self._sense_hat.set_pixel(x, y-i, pixels[i])
 
         # Set right pixels
         x = 4
@@ -226,7 +226,7 @@ class BlxSenseHat(object):
         prob = probs[0][1]
         pixels = self._getPixelsValue(prob)
         for i in range(3):
-            self._sense_hat.set_pixels(x+i, y, pixels[i])
+            self._sense_hat.set_pixel(x+i, y, pixels[i])
 
 
         # Set bottom pixels
@@ -235,7 +235,7 @@ class BlxSenseHat(object):
         prob = probs[0][2]
         pixels = self._getPixelsValue(prob)
         for i in range(3):
-            self._sense_hat.set_pixels(x, y+i, pixels[i])
+            self._sense_hat.set_pixel(x, y+i, pixels[i])
 
         # Set left pixels
         x = 3
@@ -243,7 +243,7 @@ class BlxSenseHat(object):
         prob = probs[0][3]
         pixels = self._getPixelsValue(prob)
         for i in range(3):
-            self._sense_hat.set_pixels(x-i, y, pixels[i])
+            self._sense_hat.set_pixel(x-i, y, pixels[i])
 
     def convert_orientation(self, orientation, shift=0):
     

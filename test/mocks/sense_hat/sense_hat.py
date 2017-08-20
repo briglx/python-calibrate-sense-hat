@@ -6,5 +6,5 @@ class SenseHat(object):
     def rotation(self):
         return 0
 
-    def set_pixels(self, x,y, pixel):
+    def set_pixel(self, x,y, pixel):
         print x, y, pixel
