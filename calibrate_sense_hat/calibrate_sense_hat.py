@@ -199,6 +199,12 @@ class BlxSenseHat(object):
 
         return probs
 
+    def _show_prediction(self, orientation):
+
+        munged = self._convert_orientation(orientation)
+        probs = self._clf.predict_proba(munged)
+        self._set_predicted_pixels(probs)
+
     def _set_predicted_pixels(self, probs):
 
         # Set top Pixels
@@ -236,7 +242,16 @@ class BlxSenseHat(object):
         for i in range(3):
             self._sense_hat.set_pixels(x-i, y, pixels[i])
 
-
+    def convert_orientation(self, orientation, shift=0):
+    
+        orientation = np.array([raw_orientation['pitch'], raw_orientation['roll'], raw_orientation['yaw'],  ])
+           
+        orientation = np.round(orientation).astype(int)
+        idx = np.where(orientation >180)
+        orientation[idx] = orientation[idx] - 360
+        orientation[-1]  = 90 - orientation[-1]  
+        
+        return orientation
 
     def calibrate(self, duration):
 
@@ -287,7 +302,7 @@ class BlxSenseHat(object):
             orientation = self._sense_hat.get_orientation()
 
             # Print Prediction
-            
+            self._show_prediction(orientation)
 
             sys.stdout.write(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"]) + '\n')
             time.sleep(.1)
