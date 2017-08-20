@@ -27,7 +27,7 @@ class BlxSenseHat(object):
 
         # Load trained model
         self._load_model(
-            os.path.join(dir_path,'../model/%s.sav' % model_name)
+            os.path.join(dir_path,'../model/%s.pkl' % model_name)
         )
 
         self._sense_hat = SenseHat()
@@ -63,8 +63,8 @@ class BlxSenseHat(object):
         based on the orientation readings.
         """
 
-        # self._clf = joblib.load(model_file)
-        self._clf = pickle.load(open(model_file, 'rb'))
+        self._clf = joblib.load(model_file)
+        #self._clf = pickle.load(open(model_file, 'rb'))
 
 
     ####
