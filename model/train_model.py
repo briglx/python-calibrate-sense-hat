@@ -3,6 +3,7 @@
 import pandas as pd
 import numpy as np
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.externals import joblib
 
 names = ['direction', 'pitch', 'roll', 'yaw']
 df = pd.read_csv("rawsample-munged.csv", names=names, header=0)
@@ -35,3 +36,7 @@ print f1score
 
 gscore =np.sqrt(precision * recall)
 print gscore
+
+
+
+joblib.dump(clf, 'finalized_model.pkl') 
