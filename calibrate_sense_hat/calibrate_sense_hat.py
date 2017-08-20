@@ -5,7 +5,8 @@ from sense_hat import SenseHat
 import numpy as np
 import time
 import sys, errno
-from sklearn.externals import joblib
+# from sklearn.externals import joblib
+import pickle
 
 class BlxSenseHat(object):
 
@@ -13,7 +14,7 @@ class BlxSenseHat(object):
     def __init__(
             self,
             text_assets='calibrate_sense_hat_text',
-            model_name='filename'
+            model_name='finalized_model'
         ):
         self._text_dict = {}
        
@@ -26,7 +27,7 @@ class BlxSenseHat(object):
 
         # Load trained model
         self._load_model(
-            os.path.join(dir_path,'../model/%s.pkl' % model_name)
+            os.path.join(dir_path,'../model/%s.sav' % model_name)
         )
 
         self._sense_hat = SenseHat()
@@ -62,8 +63,8 @@ class BlxSenseHat(object):
         based on the orientation readings.
         """
 
-        self._clf = joblib.load(model_file)
-
+        # self._clf = joblib.load(model_file)
+        self._clf = pickle.load(open(model_file, 'rb'))
 
 
     ####
