@@ -201,7 +201,7 @@ class BlxSenseHat(object):
 
     def _show_prediction(self, orientation):
 
-        munged = self._convert_orientation(orientation)
+        munged = self.convert_orientation(orientation)
         probs = self._clf.predict_proba(munged)
         self._set_predicted_pixels(probs)
 
