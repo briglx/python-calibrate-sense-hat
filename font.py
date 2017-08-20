@@ -14,6 +14,8 @@ blue = [0, 0, 255]
 navy = [0, 0, 128]
 fuchia = [255, 0, 255]
 purple = [128, 0, 128]
+peach = [242,173, 101]
+
 
 w = white
 s = silver
@@ -31,6 +33,7 @@ u = blue
 n = navy
 f = fuchia
 p = purple
+c = peach
 
 blank = [
 0, 0, 0, 0, 0, 0, 0, 0,
@@ -172,6 +175,16 @@ b, b, b, b, b, b, b, b,
 b, b, b, b, b, b, b, b
 ]
 
+ears = [
+g, g, g, b, b, g, g, g,
+g, g, g, b, b, g, g, g,
+g, g, g, g, g, g, g, g,
+b, g, g, g, g, g, g, b,
+b, y, c, b, c, b, c, b,
+b, y, c, c, c, c, c, b,
+b, y, c, c, c, b, c, b,
+b, c, c, c, c, c, c, b
+]
 
 def _get_char_pixels(self, s):
     

@@ -5,21 +5,29 @@ from sense_hat import SenseHat
 import numpy as np
 import time
 import sys, errno
+from sklearn.externals import joblib
+
 
 class BlxSenseHat(object):
 
 
     def __init__(
             self,
-            text_assets='calibrate_sense_hat_text'
+            text_assets='calibrate_sense_hat_text',
+            model_name='filename'
         ):
         self._text_dict = {}
-
+       
         # Load text assets
         dir_path = os.path.dirname(__file__)
         self._load_text_assets(
             os.path.join(dir_path, '%s.png' % text_assets),
             os.path.join(dir_path, '%s.txt' % text_assets)
+        )
+
+        # Load trained model
+        self._load_model(
+            os.path.join(dir_path,'../model/%s.pkl' % model_name)
         )
 
         self._sense_hat = SenseHat()
@@ -47,6 +55,17 @@ class BlxSenseHat(object):
         }
 
         self._rotation = 0
+
+
+    def _load_model(self, model_file):
+        """
+        Internal. Loads a trained model that predicts the direction 
+        based on the orientation readings.
+        """
+
+        self._clf = joblib.load(model_file)
+
+
 
     ####
     # Text assets
@@ -132,7 +151,93 @@ class BlxSenseHat(object):
 
         self._sense_hat.rotation = previous_rotation
 
+    def _getPixelValue(self, val):
+        # takes a value between 0-33.3333
+        # Returns an array of RGB colors ranging between White -> Blue
+        # Values Close to 0 are mapped to White 
+        # Values clost to 33.333 are mapped to Blue
+        # It should be a gradient between white to blue for 0 -> 33.333
+        # return black if val <= 0
+        
+        
+        if val <= 0:
+            return [0,0,0]
+
+        if val > .33333:
+            return [0,0,255]
+        
+        color = int(255 - np.round(765 * val ))
+        return [color,color,255]
     
+    
+    def _getPixelsValue(self, val):
+        # takes a value between 0-1
+        # returns an array that represents rgb values for three pixels
+        # The pixels 'Fill up' from 0 to 1
+        # values between [0:1/3) will fill up the first pixel
+        # values between [1/3:2/3) will have the first pixel 'full' and filling the second
+        # values between [2/3:1] will have the first two pixels 'full' and the third one filling
+        # pixels are black until they start filling
+        
+        delimeter = 1.0 / 3.0
+        
+        if(int(val / delimeter) <= 0):
+            return [self._getPixelValue(val),[0,0,0],[0,0,0]]
+        
+        if(int(val / delimeter) == 1):
+            return [[0,0,255],self._getPixelValue(val % delimeter),[0,0,0]]
+        
+        if(int(val / delimeter) == 2):
+            return [[0,0,255],[0,0,255],self._getPixelValue(val % delimeter)]
+        
+        if(int(val / delimeter) >= 3):
+            return [[0,0,255],[0,0,255],[0,0,255]]
+    
+    def _predict_direction(self, orientation):
+
+        probs = self._clf.predict_proba(orientation)
+
+        return probs
+
+    def _set_predicted_pixels(self, probs):
+
+        # Set top Pixels
+        x = 3
+        y = 3
+        
+        prob = probs[0][0]
+        pixels = self._getPixelsValue(prob)
+
+        for i in range(3):
+            self._sense_hat.set_pixels(x, y-i, pixels[i])
+
+        # Set right pixels
+        x = 4
+        y = 3
+        prob = probs[0][1]
+        pixels = self._getPixelsValue(prob)
+        for i in range(3):
+            self._sense_hat.set_pixels(x+i, y, pixels[i])
+
+
+        # Set bottom pixels
+        x = 4
+        y = 4
+        prob = probs[0][2]
+        pixels = self._getPixelsValue(prob)
+        for i in range(3):
+            self._sense_hat.set_pixels(x, y+i, pixels[i])
+
+        # Set left pixels
+        x = 3
+        y = 4
+        prob = probs[0][3]
+        pixels = self._getPixelsValue(prob)
+        for i in range(3):
+            self._sense_hat.set_pixels(x-i, y, pixels[i])
+
+
+
     def calibrate(self, duration):
 
         X = (128, 0, 0)
@@ -180,6 +285,10 @@ class BlxSenseHat(object):
         for i in range(duration * 10):
 
             orientation = self._sense_hat.get_orientation()
+
+            # Print Prediction
+            
+
             sys.stdout.write(str(direction) + ', ' + str(orientation["pitch"]) + ', ' + str(orientation["roll"]) + ', ' + str(orientation["yaw"]) + '\n')
             time.sleep(.1)
 
