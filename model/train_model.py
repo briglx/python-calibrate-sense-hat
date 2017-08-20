@@ -1,5 +1,9 @@
 #!/usr/bin/python
 
+import pandas as pd
+import numpy as np
+from sklearn.ensemble import RandomForestClassifier
+
 names = ['direction', 'pitch', 'roll', 'yaw']
 df = pd.read_csv("rawsample-munged.csv", names=names, header=0)
 

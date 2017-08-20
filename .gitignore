@@ -102,3 +102,4 @@ ENV/
 
 .pyc
 ~$MapPixelToProb.xlsx
+~$data.xlsx
